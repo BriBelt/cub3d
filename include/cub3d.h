@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/08 17:58:15 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:48:21 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@
 # define HEIGHT 256 
 # define TILE_SIZE 16
 
-# define PI 3.141592
-
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
@@ -65,29 +63,6 @@ enum	e_map_char
 	SPACE,
 };
 
-typedef struct s_ray
-{
-//	Initial player postion
-	double	x;
-	double	y;
-//	What the initial x, y positions will be incremented by
-	double	x_step;
-	double	y_step;
-//	Value of the grid interception of the first grid interception
-	double	x_intercept;
-	double	y_intercept;
-//	Flags to know where the player is looking
-	int		left;
-	int		down;
-//	Flags to know if there's a collision
-	double	wallHit_x;
-	double	wallHit_y;
-//	Final value for the shortest ray
-	double	distance;
-	double	angle;
-	int		type;
-}				t_ray;
-
 /* Structure for the image creation process, this will be passed to the
  * mlx_new_image() to create each image. */
 typedef struct s_img
@@ -98,23 +73,6 @@ typedef struct s_img
 	int		len;
 	int		bpp;
 }				t_img;
-
-typedef struct s_player
-{
-	double	x;
-	double	y;
-	double	dest_x;
-	double	dest_y;
-	double	fov;
-	double	rotation;
-	int		move;
-	int		turn;
-	int		m_speed;
-	int		left;
-	int		down;
-	double		t_speed;
-
-}				t_player;
 
 /* Structure for all the needed variables for the mlx library. */
 typedef struct s_mlx
@@ -148,16 +106,43 @@ typedef struct s_minimap
 	int	y_size;
 }				t_minimap;
 
+typedef struct	s_vector
+{
+	double	x;
+	double	y;
+}				t_vector;
+
+typedef struct	s_player
+{
+	t_vector	pos;
+	t_vector	dir;
+}				t_player;
+
+typedef struct	s_cam
+{
+	t_vector	plane;
+	t_vector	rayDir;
+	int			stepX;
+	int			stepY;
+	int			mapX;
+	int			mapY;
+	int			wall_hit;
+	int			hit_type;
+	double		fov;
+	double		cam_x;
+	double		deltaDistX;
+	double		deltaDistY;
+}				t_cam;
+
 /* Main Structure for game. */
 typedef struct s_cub
 {
 	char		**map;
 	int			ceiling[3];
 	int			floor[3];
+	t_cam		cam;
 	t_tex		**textures;
 	t_mlx		mlx;
-	t_player	player;
-	t_ray		ray[WIDTH];
 	t_minimap	minimap;
 	t_map_data	map_data;
 }				t_cub;
@@ -186,32 +171,7 @@ int		get_2d_array_size(char **array);
 size_t	get_longest_line(char **map);
 char	**copy_spaced_map(char **map);
 void	free_2d_array(char **array);
-/*		keyboard				*/
-int		key_press(int keycode, t_cub *cub);
-/*		player					*/
-void	check_player_direction(t_player *player);
-void	render_ray(t_mlx mlx, t_player player, t_ray ray, double angle);
-double	normalize_angle(double angle);
-int		collision(double x, double y, char **map);
-void	render_ray(t_mlx mlx, t_player player, t_ray ray, double angle);
-void	render_direction(t_mlx mlx, t_player player);
-void	render_player(t_mlx mlx, t_player player);
-t_player	get_player_position(char **map);
-void	init_player_stats(t_player *player);
 /*		images					*/
 t_img	create_image(t_mlx mlx);
 void	ft_mlx_pixel_put(t_img *img, int x, int y, int color);
-/*		mini_map				*/
-void	init_map_data(t_cub *cub);
-void	paint_mini_map(t_cub *cub);
-void	render_background(t_cub *cub);
-void	render_minimap(t_cub *cub);
-/*		rays					*/
-void	get_ray_y(t_ray *ray, t_cub cub, double angle);
-void	get_ray_x(t_ray *ray, t_cub cub, double angle);
-t_ray	raycaster(t_cub cub, double angle);
-void	create_ray_vision(t_cub *cub);
-
-void	render_walls(t_cub *cub, t_player player, t_ray ray, int x);
-void	paint_walls(t_cub *cub);
 #endif
