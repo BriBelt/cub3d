@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/16 17:48:21 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:37:59 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,11 @@ typedef struct	s_cam
 	int			hit_type;
 	double		fov;
 	double		cam_x;
+	double		sideDistX;
+	double		sideDistY;
 	double		deltaDistX;
 	double		deltaDistY;
+	double		dist;
 }				t_cam;
 
 /* Main Structure for game. */
@@ -145,6 +148,7 @@ typedef struct s_cub
 	t_mlx		mlx;
 	t_minimap	minimap;
 	t_map_data	map_data;
+	t_player	player;
 }				t_cub;
 
 /*		cub3d		*/
@@ -174,4 +178,10 @@ void	free_2d_array(char **array);
 /*		images					*/
 t_img	create_image(t_mlx mlx);
 void	ft_mlx_pixel_put(t_img *img, int x, int y, int color);
+/*		draw					*/
+void	draw_screen(t_cub *cub);
+/*		player					*/
+void	init_plane_vector(t_cam *cam);
+void	init_player_pos(t_player *player);
+
 #endif
