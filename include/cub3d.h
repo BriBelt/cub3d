@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/17 12:37:59 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:53:54 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,5 +183,7 @@ void	draw_screen(t_cub *cub);
 /*		player					*/
 void	init_plane_vector(t_cam *cam);
 void	init_player_pos(t_player *player);
+/*		keyboard				*/
+int		keypress(int keycode, t_cub *cub);
 
 #endif

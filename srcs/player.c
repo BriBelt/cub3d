@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:25:00 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/17 15:21:13 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:48:42 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	init_plane_vector(t_cam *cam)
 
 void	init_player_pos(t_player *player)
 {
-	player->pos.x = 150;
-	player->pos.y = 150;
+	player->pos.x = 50;
+	player->pos.y = 50;
 	player->dir.x = 0;
 	player->dir.y = 1;
 }
