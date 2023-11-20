@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/16 17:57:46 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:54:08 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,33 @@ void	paint_background(t_cub *cub)
 	}
 }
 
+void	paint_ray(t_cub *cub, int *x)
+{
+//	double			wall_height;
+	double			draw_height;
+	double			draw_end;
+	unsigned int	color;
+	int				y;
+
+	color = 0x00FF0000;
+	draw_height = (double)HEIGHT / cub->cam.dist;
+	printf("draw_height = %f\n", draw_height);
+	y = -draw_height / 2 + HEIGHT / 2;
+	printf("y = %i\n", y);
+	if (y < 0)
+		y = 0;
+	draw_end = fabs(draw_height / 2 + HEIGHT / 2);
+	printf("draw end = %f\n", draw_end);
+	if (draw_end < 0)
+		draw_end = HEIGHT - 1;
+	while (y < draw_end)
+	{
+		printf("inside paint_ray while [%i]\n", y);
+		mlx_pixel_put(cub->mlx.connect, cub->mlx.window, *x, y, color);
+		y++;
+	}
+}
+
 void	raycaster(t_cub *cub)
 {
 	int			x;
@@ -43,13 +70,20 @@ void	raycaster(t_cub *cub)
 	player = cub->player;
 	while (x < WIDTH)
 	{
-		cam.cam_x = 2x / WIDTH - 1;
+		cam.cam_x = (2 * x) / (double)WIDTH - 1;
+		printf("cam x = %f\n", cam.cam_x);
 		cam.rayDir.x = player.dir.x + cam.plane.x * cam.cam_x;
 		cam.rayDir.y = player.dir.y + cam.plane.y * cam.cam_x;
+		if (cam.rayDir.x == 0)
+			cam.deltaDistX = 1e30;
+		else
+			cam.deltaDistX = fabs(1 / cam.rayDir.x);
+		if (cam.rayDir.y == 0)
+			cam.deltaDistY = 1e30;
+		else
+			cam.deltaDistY = fabs(1 / cam.rayDir.y);
 		cam.mapX = (int)(player.pos.x / TILE_SIZE);
 		cam.mapY = (int)(player.pos.y / TILE_SIZE);
-		cam.deltaDistX = fabs(1 / cam.rayDir.x);
-		cam.deltaDistY = fabs(1 / cam.rayDir.y);
 		if (cam.rayDir.x < 0)
 		{
 			cam.stepX = -1;
@@ -91,6 +125,8 @@ void	raycaster(t_cub *cub)
 			cam.dist = cam.sideDistX - cam.deltaDistX;
 		else
 			cam.dist = cam.sideDistY - cam.deltaDistY;
+		printf("cam distance = %f\n", cam.dist);
+		paint_ray(cub, &x);
 		x++;
 	}
 }
