@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/20 14:53:54 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:45:57 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,7 @@ void	ft_mlx_pixel_put(t_img *img, int x, int y, int color);
 /*		draw					*/
 void	draw_screen(t_cub *cub);
 /*		player					*/
-void	init_plane_vector(t_cam *cam);
-void	init_player_pos(t_player *player);
+void	init_player_plane(t_player *player, t_cam *cam, char **map);
 /*		keyboard				*/
 int		keypress(int keycode, t_cub *cub);
 
