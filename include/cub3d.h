@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/22 17:22:24 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:11:12 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define TILE_SIZE 16
 
 /*		WINDOW			*/
-# define TEX_WIDTH 32
+# define TEX_WIDTH 32 
 
 # include <stdio.h>
 # include <fcntl.h>
@@ -200,6 +200,6 @@ int		keypress(int keycode, t_cub *cub);
 void	raycaster(t_cub *cub);
 /*		textures				*/
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height);
-void	get_texX(t_cub *cub);
+void	get_texX(t_cub *cub, t_tex *tex);
 
 #endif

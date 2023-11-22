@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/22 15:56:26 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:16:05 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ void	paint_ray(t_cub *cub, int *x)
 	double			draw_end;
 	unsigned int	color;
 	int				start;
-	int				y;
 
-	get_texX(cub);
+	get_texX(cub, *cub->textures);
 	draw_height = HEIGHT / cub->cam.dist;
 	start = HEIGHT / 2 - draw_height / 2;
 	if (start < 0)
@@ -48,12 +47,11 @@ void	paint_ray(t_cub *cub, int *x)
 	draw_end = draw_height / 2 + HEIGHT / 2;
 	if (draw_end < 0)
 		draw_end = HEIGHT - 1;
-	y = start;
-	while (y < draw_end)
+	while (start < draw_end)
 	{
-		color = get_tex_color(cub, y, draw_height);
-		mlx_pixel_put(cub->mlx.connect, cub->mlx.window, *x, y, color);
-		y++;
+		color = get_tex_color(cub, start, draw_height);
+		mlx_pixel_put(cub->mlx.connect, cub->mlx.window, *x, start, color);
+		start++;
 	}
 }
 
