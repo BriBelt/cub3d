@@ -92,31 +92,32 @@ int	check_map(char **map)
 	return (free_2d_array(s_map), 1);
 }
 
+
 /* This function will check if the t_tex **textures list is correct, meaning
  * if the list has only four nodes, and those four nodes are not duplicated.
  * If the list doesn´t pass these two checks, returns 0, else returns 1. */
 int	check_textures(t_tex **textures)
 {
 	t_tex	*curr;
-	t_tex	*check;
+	t_tex	*c;
 	int		size;
 	int		i;
 	int		j;
 
 	size = t_tex_size(*textures);
 	if (size != 4)
-		return (0);
+		return (t_tex_free(textures), 0);
 	curr = *textures;
-	check = *textures;
+	c = *textures;
 	i = 0;
 	while (curr)
 	{
 		j = 0;
-		while (check)
+		while (c)
 		{
-			if (i != j && check->type == curr->type)
-				return (0);
-			check = check->next;
+			if ((i != j && c->type == curr->type) || !valid_txt(c))
+				return (t_tex_free(textures), 0);
+			c = c->next;
 			j++;
 		}
 		curr = curr->next;

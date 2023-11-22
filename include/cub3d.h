@@ -36,9 +36,6 @@
 # define HEIGHT 256 
 # define TILE_SIZE 16
 
-/*		WINDOW			*/
-# define TEX_WIDTH 32 
-
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
@@ -86,7 +83,6 @@ typedef struct s_mlx
 	void	*connect;
 	void	*background;
 	t_img	img_background;
-//	Should include void * for textures
 }				t_mlx;
 
 /* Structure for the textures. */
@@ -166,13 +162,14 @@ typedef struct s_cub
 int		check_extension(char *filename);
 /*		t_tex__utils	*/
 void	t_tex_free(t_tex **lst);
+int	valid_txt(t_tex *node);
 void	insert_node(t_tex **lst, t_tex *node);
 t_tex	*create_node(char *texture_path, int type);
 int		t_tex_size(t_tex *lst);
 /*		tc_utils		*/
 int		check_rgb_code(unsigned int *rgb_code);
 int		only_numbers(char *str);
-int		check_extension(char *filename);
+int		check_extension(char *filename, char *ext);
 /*		fetch_header_data		*/
 t_cub	*fetch_header_data(int file_fd);
 /*		map_parsing				*/

@@ -21,14 +21,17 @@ void	init_textures(t_cub *cub)
 	mlx = cub->mlx;
 	tex = *cub->textures;
 	img = &tex->img;
-	img->img = mlx_xpm_file_to_image(mlx.connect, tex->path, &img->w, &img->h);
+	img->img = mlx_xpm_file_to_image(mlx.connect, tex->path,
+			&img->w, &img->h);
+	if (!img->img)
+		(printf("Error: mlx_xpm_file_to_image\n"), exit(1));
 	img->addr = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->len,
 			&img->endian);
 }
 
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height)
 {
-	unsigned int	color;
+	unsigned int		color;
 	double			step;
 	t_cam			*cam;
 	t_img			*img;
@@ -51,14 +54,19 @@ void	get_texX(t_cub *cub, t_tex *tex)
 {
 	t_cam		*cam;
 	t_player	player;
+//	not sure if these two should be doubles or ints
+	int		p_posx;
+	int		p_posy;
 
 	init_textures(cub);
 	cam = &cub->cam;
 	player = cub->player;
+	p_posx = player.pos.x / TILE_SIZE;
+	p_posy = player.pos.y / TILE_SIZE;
 	if (cam->hit_type == 0)
-		cam->wallX = (player.pos.y / TILE_SIZE) + cam->dist * cam->rayDir.y;
+		cam->wallX = p_posy + cam->dist * cam->rayDir.y;
 	else
-		cam->wallX = (player.pos.x / TILE_SIZE) + cam->dist * cam->rayDir.x;
+		cam->wallX = p_posx + cam->dist * cam->rayDir.x;
 	cam->wallX -= floor(cam->wallX);
 	cam->texX = (int)(cam->wallX * (double)tex->img.w);
 	if (cam->hit_type == 1 && cam->rayDir.y > 0)

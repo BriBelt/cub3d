@@ -27,6 +27,21 @@ void	t_tex_free(t_tex **lst)
 	free(lst);
 }
 
+int	valid_txt(t_tex *node)
+{
+	int	fd;
+	char	*ext;
+
+	ext = ".xpm";
+	if (!check_extension(node->path, ext))
+		return (0);
+	fd = open(node->path, O_RDONLY);
+	if (fd <= 0)
+		return (0);
+	close(fd);
+	return (1);
+}
+
 /* This function will return the size of the given t_tex *list.*/
 int	t_tex_size(t_tex *lst)
 {

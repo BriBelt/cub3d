@@ -36,13 +36,11 @@ int	only_numbers(char *str)
 	return (1);
 }
 
-int	check_extension(char *filename)
+int	check_extension(char *filename, char *ext)
 {
 	int		i;
 	int		j;
-	char	*ext;
 
-	ext = ".cub";
 	i = ft_strlen(filename);
 	j = ft_strlen(ext);
 	while (j >= 0)

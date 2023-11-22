@@ -42,7 +42,7 @@ t_cub	*parsing(char *filename)
 	int		fd;
 	t_cub	*cub;
 
-	if (!check_extension(filename))
+	if (!check_extension(filename, ".cub"))
 		return (printf(ERRFORMAT, filename), NULL);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
