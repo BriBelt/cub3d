@@ -6,13 +6,13 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:24:46 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/10/25 16:43:29 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:06:31 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-int	check_rgb_code(int *rgb_code)
+int	check_rgb_code(unsigned int *rgb_code)
 {
 	if (rgb_code[0] < 0 || rgb_code[0] > 255)
 		return (0);

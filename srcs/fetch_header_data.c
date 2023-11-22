@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:11:24 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/10/26 15:07:43 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:50:18 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,30 @@ void	manage_textures(t_cub *cub, char **array)
 		type = WE;
 	if (!ft_strcmp(array[0], "EA"))
 		type = EA;
-	insert_node(cub->textures, create_node(array[1], type));
+	insert_node(cub->textures, create_node(ft_strtrim(array[1], "\n"), type));
+}
+
+void	assign_colors(t_cub *cub, unsigned int *rgb_code, char type)
+{
+	if (type == 'F')
+	{
+		cub->floor[0] = rgb_code[0];
+		cub->floor[1] = rgb_code[1];
+		cub->floor[2] = rgb_code[2];
+	}
+	else if (type == 'C')
+	{
+		cub->ceiling[0] = rgb_code[0];
+		cub->ceiling[1] = rgb_code[1];
+		cub->ceiling[2] = rgb_code[2];
+	}
 }
 
 int	manage_colors(t_cub *cub, char **array, char type)
 {
-	char	**rgb;
-	int		rgb_code[3];
-	int		i;
+	char			**rgb;
+	unsigned int	rgb_code[3];
+	int				i;
 
 	rgb = ft_split(array[1], ',');
 	free_2d_array(array);
@@ -51,18 +67,7 @@ int	manage_colors(t_cub *cub, char **array, char type)
 	rgb_code[2] = ft_atoi(rgb[2]);
 	if (!check_rgb_code(rgb_code))
 		return (printf(ERRCOLOR), free_2d_array(rgb), 0);
-	if (type == 'F')
-	{
-		cub->floor[0] = rgb_code[0];
-		cub->floor[1] = rgb_code[1];
-		cub->floor[2] = rgb_code[2];
-	}
-	else if (type == 'C')
-	{
-		cub->ceiling[0] = rgb_code[0];
-		cub->ceiling[1] = rgb_code[1];
-		cub->ceiling[2] = rgb_code[2];
-	}
+	assign_colors(cub, rgb_code, type);
 	return (free_2d_array(rgb), 1);
 }
 
@@ -70,7 +75,7 @@ int	clean_line(t_cub *cub, char *line)
 {
 	char	**array;
 
-	if (!line)
+	if (!line || (line && !ft_strcmp(line, "")))
 		return (0);
 	array = ft_split(line, ' ');
 	if (!ft_strcmp(array[0], "F"))
@@ -104,14 +109,12 @@ t_cub	*fetch_header_data(int file_fd)
 			free(line);
 			line = get_next_line(file_fd);
 		}
-		if (!line)
-			break ;
+//		if (!line)
+//			break ;
 		if (!clean_line(cub, line))
 			return (free(line), NULL);
-		// put error
 		free(line);
 		line = get_next_line(file_fd);
 	}
-	close(file_fd);
-	return (cub);
+	return (close(file_fd), cub);
 }

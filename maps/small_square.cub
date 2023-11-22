@@ -1,10 +1,10 @@
 F 200,100,20
 C 200,100,20
 
-NO bla
-SO bla
-EA bla
-WE bla
+NO /Users/bbeltran/Cursus/cub3d/textures/floor.xpm
+SO /Users/bbeltran/Cursus/cub3d/textures/floor.xpm
+EA /Users/bbeltran/Cursus/cub3d/textures/floor.xpm
+WE /Users/bbeltran/Cursus/cub3d/textures/floor.xpm
 
 111111111
 1000E0001

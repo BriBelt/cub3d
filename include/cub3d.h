@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/21 16:45:57 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:22:24 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 # define WIDTH 512 
 # define HEIGHT 256 
 # define TILE_SIZE 16
+
+/*		WINDOW			*/
+# define TEX_WIDTH 32
 
 # include <stdio.h>
 # include <fcntl.h>
@@ -68,10 +71,12 @@ enum	e_map_char
 typedef struct s_img
 {
 	void	*img;
-	char	*addr;
+	int		*addr;
 	int		endian;
 	int		len;
 	int		bpp;
+	int		h;
+	int		w;
 }				t_img;
 
 /* Structure for all the needed variables for the mlx library. */
@@ -89,6 +94,7 @@ typedef struct s_tex
 {
 	char			*path;
 	int				type;
+	t_img			img;
 	struct s_tex	*next;
 }				t_tex;
 
@@ -135,21 +141,26 @@ typedef struct	s_cam
 	double		deltaDistX;
 	double		deltaDistY;
 	double		dist;
+	double		wallX;
+	int			texX;
+	int			texY;
+	double		texStep;
+	double		texPos;
 }				t_cam;
 
 /* Main Structure for game. */
 typedef struct s_cub
 {
-	char		**map;
-	int			ceiling[3];
-	int			floor[3];
-	t_cam		cam;
-	t_tex		**textures;
-	t_mlx		mlx;
-	t_minimap	minimap;
-	t_map_data	map_data;
-	t_player	player;
-}				t_cub;
+	char			**map;
+	unsigned int	ceiling[3];
+	unsigned int	floor[3];
+	t_cam			cam;
+	t_tex			**textures;
+	t_mlx			mlx;
+	t_minimap		minimap;
+	t_map_data		map_data;
+	t_player		player;
+}					t_cub;
 
 /*		cub3d		*/
 int		check_extension(char *filename);
@@ -159,7 +170,7 @@ void	insert_node(t_tex **lst, t_tex *node);
 t_tex	*create_node(char *texture_path, int type);
 int		t_tex_size(t_tex *lst);
 /*		tc_utils		*/
-int		check_rgb_code(int *rgb_code);
+int		check_rgb_code(unsigned int *rgb_code);
 int		only_numbers(char *str);
 int		check_extension(char *filename);
 /*		fetch_header_data		*/
@@ -179,10 +190,16 @@ void	free_2d_array(char **array);
 t_img	create_image(t_mlx mlx);
 void	ft_mlx_pixel_put(t_img *img, int x, int y, int color);
 /*		draw					*/
+void	paint_ray(t_cub *cub, int *x);
 void	draw_screen(t_cub *cub);
 /*		player					*/
 void	init_player_plane(t_player *player, t_cam *cam, char **map);
 /*		keyboard				*/
 int		keypress(int keycode, t_cub *cub);
+/*		ray						*/
+void	raycaster(t_cub *cub);
+/*		textures				*/
+unsigned int	get_tex_color(t_cub *cub, double start, double draw_height);
+void	get_texX(t_cub *cub);
 
 #endif
