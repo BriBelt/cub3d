@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 17:12:12 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:17:50 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define RIGHT 124
 
 /*		WINDOW			*/
-# define WIDTH 512 
-# define HEIGHT 256 
+# define WIDTH 1024 
+# define HEIGHT 512 
 # define TILE_SIZE 16
 
 # include <stdio.h>
@@ -90,6 +90,7 @@ typedef struct s_tex
 	char			*path;
 	int				type;
 	t_img			img;
+	int				size;
 	struct s_tex	*next;
 }				t_tex;
 
@@ -196,12 +197,16 @@ void			draw_screen(t_cub *cub);
 void			init_player_plane(t_player *player, t_cam *cam, char **map);
 /*		keyboard				*/
 int				keypress(int keycode, t_cub *cub);
+/*		moves					*/
+void			move_up_down(int keycode, t_cub *cub);
+void			move_left_right(int keycode, t_cub *cub);
 /*		ray						*/
+int				collision(double x, double y, char **map);
 void			raycaster(t_cub *cub);
 /*		textures				*/
 void			init_textures(t_cub *cub);
 void			destroy_textures(t_tex **textures, t_cub *cub);
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height);
-void			get_texX(t_cub *cub, t_tex *tex);
+void			get_tex_x(t_cub *cub, t_tex *tex);
 
 #endif

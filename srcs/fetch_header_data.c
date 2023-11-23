@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:11:24 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 16:31:42 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:23:19 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ int	clean_line(t_cub *cub, char *line)
 {
 	char	**array;
 
-	if (!line || (line && !ft_strcmp(line, "")))
+	if (!line)
 		return (0);
+	if (line && !ft_strcmp(line, ""))
+		return (free(line), 0);
 	array = ft_split(line, ' ');
 	if (!ft_strcmp(array[0], "F"))
 		return (manage_colors(cub, array, 'F'));
@@ -93,10 +95,16 @@ int	clean_line(t_cub *cub, char *line)
 	if (!ft_strcmp(array[0], "NO") || !ft_strcmp(array[0], "SO")
 		|| !ft_strcmp(array[0], "WE") || !ft_strcmp(array[0], "EA"))
 		manage_textures(cub, array);
+//	else
+//		return (printf(ERRTEXT), free_2d_array(array), 0);
 	free_2d_array(array);
 	return (1);
 }
 
+/* After line 127, we used to have a "if (!line) -> break;" we removed it but we
+ * are not sure if it could cause any problems. In clean_line (86 to 89) we used
+ * to have both conditions together and free the line in this function, we need
+ * to check if everything works.*/
 t_cub	*fetch_header_data(int file_fd)
 {
 	char	*line;
@@ -117,10 +125,8 @@ t_cub	*fetch_header_data(int file_fd)
 			free(line);
 			line = get_next_line(file_fd);
 		}
-//		if (!line)
-//			break ;
 		if (!clean_line(cub, line))
-			return (free(line), NULL);
+			return (NULL);
 		free(line);
 		line = get_next_line(file_fd);
 	}

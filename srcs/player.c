@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:25:00 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/21 16:45:58 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:36:34 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,24 @@ char	get_player_view(double *x, double *y, char **map)
 	return (0);
 }
 
+void	rest_of_init(t_player *player, t_cam *cam, char view)
+{
+	if (view == 'W')
+	{
+		player->dir.x = -1;
+		player->dir.y = 0;
+		cam->plane.x = 0;
+		cam->plane.y = -0.66;
+	}
+	else if (view == 'E')
+	{
+		player->dir.x = 1;
+		player->dir.y = 0;
+		cam->plane.x = 0;
+		cam->plane.y = 0.66;
+	}
+}
+
 void	init_player_plane(t_player *player, t_cam *cam, char **map)
 {
 	char	view;
@@ -55,18 +73,5 @@ void	init_player_plane(t_player *player, t_cam *cam, char **map)
 		cam->plane.x = 0.66;
 		cam->plane.y = 0;
 	}
-	else if (view == 'W')
-	{
-		player->dir.x = -1;
-		player->dir.y = 0;
-		cam->plane.x = 0;
-		cam->plane.y = -0.66;
-	}
-	else if (view == 'E')
-	{
-		player->dir.x = 1;
-		player->dir.y = 0;
-		cam->plane.x = 0;
-		cam->plane.y = 0.66;
-	}
+	rest_of_init(player, cam, view);
 }

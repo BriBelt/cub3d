@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 17:11:52 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:03:11 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,22 @@ void	load_background(t_cub *cub, int height, int end, int x)
 	unsigned int	color;
 	t_img			frame;
 
-	y = 0;
+	y = -1;
 	mlx = &cub->mlx;
 	start = cub->start;
 	frame = mlx->frame;
-	while (y < start)
-	{
+	while (++y < start)
 		frame.addr[y * WIDTH + x] = cub->cceiling;
-		y++;
-	}
 	while (start < end)
 	{
 		color = get_tex_color(cub, start, height);
 		frame.addr[start * WIDTH + x] = color;
 		start++;
 	}
-	y = start;
-	while (y < HEIGHT)
+	while (start < HEIGHT)
 	{
-		frame.addr[y * WIDTH + x] = cub->cfloor;
-		y++;
+		frame.addr[start * WIDTH + x] = cub->cfloor;
+		start++;
 	}
 }
 
@@ -54,7 +50,6 @@ t_img	select_texture(t_cub *cub, t_cam cam)
 			type = WE;
 		else
 			type = EA;
-
 	}
 	else if (cam.hit_type)
 	{
@@ -79,7 +74,7 @@ void	paint_ray(t_cub *cub, int *x)
 	double			draw_end;
 	int				start;
 
-	get_texX(cub, *cub->textures);
+	get_tex_x(cub, *cub->textures);
 	draw_height = HEIGHT / cub->cam.dist;
 	start = HEIGHT / 2 - draw_height / 2;
 	if (start < 0)
@@ -98,5 +93,5 @@ void	draw_screen(t_cub *cub)
 	create_image(cub->mlx, &cub->mlx.frame);
 	raycaster(cub);
 	mlx_put_image_to_window(cub->mlx.connect, cub->mlx.window,
-			cub->mlx.frame.img, 0, 0);
+		cub->mlx.frame.img, 0, 0);
 }

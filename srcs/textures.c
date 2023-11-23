@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:45:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 17:11:15 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:32:08 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	init_textures(t_cub *cub)
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height)
 {
 	unsigned int		color;
-	double			step;
-	t_cam			*cam;
-	t_img			img;
+	double				step;
+	t_cam				*cam;
+	t_img				img;
 
 	cam = &cub->cam;
 	img = select_texture(cub, *cam);
@@ -65,7 +65,7 @@ unsigned int	get_tex_color(t_cub *cub, double start, double draw_height)
 	return (color);
 }
 
-void	get_texX(t_cub *cub, t_tex *tex)
+void	get_tex_x(t_cub *cub, t_tex *tex)
 {
 	t_cam		*cam;
 	t_player	player;

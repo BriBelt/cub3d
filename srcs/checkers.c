@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:03:31 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/10/26 12:44:04 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:25:13 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	check_map(char **map)
 	return (free_2d_array(s_map), 1);
 }
 
-
 /* This function will check if the t_tex **textures list is correct, meaning
  * if the list has only four nodes, and those four nodes are not duplicated.
  * If the list doesn´t pass these two checks, returns 0, else returns 1. */
@@ -100,12 +99,11 @@ int	check_textures(t_tex **textures)
 {
 	t_tex	*curr;
 	t_tex	*c;
-	int		size;
 	int		i;
 	int		j;
 
-	size = t_tex_size(*textures);
-	if (size != 4)
+	(*textures)->size = t_tex_size(*textures);
+	if ((*textures)->size != 4)
 		return (t_tex_free(textures), 0);
 	curr = *textures;
 	c = *textures;

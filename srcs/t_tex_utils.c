@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:27:44 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/22 17:09:43 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:23:48 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	t_tex_free(t_tex **lst)
 
 int	valid_txt(t_tex *node)
 {
-	int	fd;
+	int		fd;
 	char	*ext;
 
 	ext = ".xpm";

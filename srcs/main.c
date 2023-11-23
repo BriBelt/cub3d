@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:28:51 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/23 17:05:53 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:25:28 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ t_cub	*parsing(char *filename)
 		return (printf(ERROPEN, filename), NULL);
 	cub = fetch_header_data(fd);
 	if (!cub)
+		return (NULL);
+	if (!cub->textures || !*cub->textures)
 		return (NULL);
 	cub->map = get_map(filename);
 	if (!cub->map)

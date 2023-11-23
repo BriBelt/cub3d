@@ -6,11 +6,23 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:43:18 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 16:21:23 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:40:26 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+int	collision(double x, double y, char **map)
+{
+	int	map_x;
+	int	map_y;
+
+	map_x = floor(x / TILE_SIZE);
+	map_y = floor(y / TILE_SIZE);
+	if (map[map_y][map_x] && map[map_y][map_x] == '1')
+		return (1);
+	return (0);
+}
 
 void	ray_calc(t_player player, t_cam *cam)
 {

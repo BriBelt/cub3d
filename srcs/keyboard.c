@@ -6,93 +6,11 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:35:51 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 16:31:44 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:43:42 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
-int	collision(double x, double y, char **map)
-{
-	int	map_x;
-	int	map_y;
-
-	map_x = floor(x / TILE_SIZE);
-	map_y = floor(y / TILE_SIZE);
-	if (map[map_y][map_x] && map[map_y][map_x] == '1')
-		return (1);
-	return (0);
-}
-
-void	move_up_down(int keycode, t_cub *cub)
-{
-	int			speed;
-	t_player	*player;
-	double		new_x;
-	double		new_y;
-
-	player = &cub->player;
-	speed = 1;
-	new_x = player->pos.x;
-	new_y = player->pos.y;
-	if (keycode == W)
-	{
-		new_x += player->dir.x * speed;
-		new_y += player->dir.y * speed;
-		if (!collision(new_x, new_y, cub->map))
-		{
-			player->pos.x = new_x;
-			player->pos.y = new_y;
-		}
-	}
-	if (keycode == S)
-	{
-		new_x -= player->dir.x * speed;
-		new_y -= player->dir.y * speed;
-		if (!collision(new_x, new_y, cub->map))
-		{
-			player->pos.x = new_x;
-			player->pos.y = new_y;
-		}
-	}
-	draw_screen(cub);
-}
-
-void	move_left_right(int keycode, t_cub *cub)
-{
-	int			speed;
-	t_player	*player;
-	t_cam		cam;
-	double		new_x;
-	double		new_y;
-	
-	player = &cub->player;
-	speed = 1;
-	cam = cub->cam;
-	new_x = player->pos.x;
-	new_y = player->pos.y;
-	if (keycode == D)
-	{
-		new_x += cam.plane.x * speed;
-		new_y += cam.plane.y * speed;
-		if (!collision(new_x, new_y, cub->map))
-		{
-			player->pos.x = new_x;
-			player->pos.y = new_y;
-		}
-	}
-	if (keycode == A)
-	{
-		new_x -= cam.plane.x * speed;
-		new_y -= cam.plane.y * speed;
-		if (!collision(new_x, new_y, cub->map))
-		{
-			player->pos.x = new_x;
-			player->pos.y = new_y;
-		}
-	}
-	draw_screen(cub);
-}
 
 void	rotate_left_right(int keycode, t_cub *cub)
 {
@@ -112,8 +30,10 @@ void	rotate_left_right(int keycode, t_cub *cub)
 	}
 	if (keycode == LEFT)
 	{
-		player->dir.x = player->dir.x * cos(-speed) - player->dir.y * sin(-speed);
-		player->dir.y = player->dir.x * sin(-speed) + player->dir.y * cos(-speed);
+		player->dir.x = player->dir.x * cos(-speed)
+			- player->dir.y * sin(-speed);
+		player->dir.y = player->dir.x * sin(-speed)
+			+ player->dir.y * cos(-speed);
 		cam->plane.x = cam->plane.x * cos(-speed) - cam->plane.y * sin(-speed);
 		cam->plane.y = cam->plane.x * sin(-speed) + cam->plane.y * cos(-speed);
 	}

@@ -4,7 +4,7 @@ C 000,100,20
 NO textures/floor.xpm
 SO textures/texture.xpm
 EA textures/floor.xpm
-WE textures/42.xpm
+WE textures/texture.xpm
 
 111111111
 1000E0001
