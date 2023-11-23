@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:45:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 16:31:43 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:11:15 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,15 @@ unsigned int	get_tex_color(t_cub *cub, double start, double draw_height)
 	unsigned int		color;
 	double			step;
 	t_cam			*cam;
-	t_img			*img;
-	t_tex			**textures;
+	t_img			img;
 
-	textures = cub->textures;
-	img = &(*textures)->img;
 	cam = &cub->cam;
-	step = 1.0 * (*textures)->img.h / draw_height;
+	img = select_texture(cub, *cam);
+	step = 1.0 * img.h / draw_height;
 	cam->texPos = (start - HEIGHT / 2 + draw_height / 2) * step;
-	cam->texY = (int)cam->texPos & ((*textures)->img.h - 1);
+	cam->texY = (int)cam->texPos & (img.h - 1);
 	cam->texPos += step;
-	color = img->addr[(*textures)->img.h * cam->texY + cam->texX];
+	color = img.addr[img.h * cam->texY + cam->texX];
 	if (cam->hit_type == 1)
 		color = (color >> 1) & 8355711;
 	return (color);
@@ -74,7 +72,6 @@ void	get_texX(t_cub *cub, t_tex *tex)
 	double		p_posx;
 	double		p_posy;
 
-	init_textures(cub);
 	cam = &cub->cam;
 	player = cub->player;
 	p_posy = player.pos.y / TILE_SIZE;

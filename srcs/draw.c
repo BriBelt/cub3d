@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 16:23:46 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:11:52 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,36 @@ void	load_background(t_cub *cub, int height, int end, int x)
 		frame.addr[y * WIDTH + x] = cub->cfloor;
 		y++;
 	}
+}
+
+t_img	select_texture(t_cub *cub, t_cam cam)
+{
+	t_tex			*curr;
+	int				type;
+
+	if (!cam.hit_type)
+	{
+		if (cam.rayDir.x < 0)
+			type = WE;
+		else
+			type = EA;
+
+	}
+	else if (cam.hit_type)
+	{
+		if (cam.rayDir.y < 0)
+			type = NO;
+		else
+			type = SO;
+	}
+	curr = *cub->textures;
+	while (curr)
+	{
+		if (curr->type == type)
+			return (curr->img);
+		curr = curr->next;
+	}
+	return (curr->img);
 }
 
 void	paint_ray(t_cub *cub, int *x)

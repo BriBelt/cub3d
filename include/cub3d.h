@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 16:30:16 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:12:12 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ unsigned long	convert_rgb(unsigned int r, unsigned int g, unsigned int b);
 void			create_image(t_mlx mlx, t_img *img);
 /*		draw					*/
 void			load_background(t_cub *cub, int height, int end, int x);
+t_img			select_texture(t_cub *cub, t_cam cam);
 void			paint_ray(t_cub *cub, int *x);
 void			draw_screen(t_cub *cub);
 /*		player					*/
@@ -198,6 +199,7 @@ int				keypress(int keycode, t_cub *cub);
 /*		ray						*/
 void			raycaster(t_cub *cub);
 /*		textures				*/
+void			init_textures(t_cub *cub);
 void			destroy_textures(t_tex **textures, t_cub *cub);
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height);
 void			get_texX(t_cub *cub, t_tex *tex);
