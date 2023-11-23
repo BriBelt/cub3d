@@ -1,7 +1,7 @@
 F 200,100,20
-C 200,100,20
+C 000,100,20
 
-NO textures/texture.xpm
+NO textures/floor.xpm
 SO textures/texture.xpm
 EA textures/texture.xpm
 WE textures/texture.xpm

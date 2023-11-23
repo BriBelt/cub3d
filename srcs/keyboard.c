@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:35:51 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/21 16:11:30 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:31:44 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,9 @@ void	rotate_left_right(int keycode, t_cub *cub)
 
 void	close_game(t_cub *cub)
 {
+	if (cub->mlx.frame.img)
+		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
+	destroy_textures(cub->textures, cub);
 	mlx_destroy_window(cub->mlx.connect, cub->mlx.window);
 	exit(0);
 }

@@ -6,11 +6,24 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:45:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/22 18:27:44 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:31:43 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+void	destroy_textures(t_tex **textures, t_cub *cub)
+{
+	t_tex	*curr;
+
+	curr = *textures;
+	while (curr)
+	{
+		if (curr->img.img)
+			mlx_destroy_image(cub->mlx.connect, curr->img.img);
+		curr = curr->next;
+	}
+}
 
 void	init_textures(t_cub *cub)
 {
@@ -20,13 +33,17 @@ void	init_textures(t_cub *cub)
 
 	mlx = cub->mlx;
 	tex = *cub->textures;
-	img = &tex->img;
-	img->img = mlx_xpm_file_to_image(mlx.connect, tex->path,
-			&img->w, &img->h);
-	if (!img->img)
-		(printf("Error: mlx_xpm_file_to_image\n"), exit(1));
-	img->addr = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->len,
-			&img->endian);
+	while (tex)
+	{
+		img = &tex->img;
+		img->img = mlx_xpm_file_to_image(mlx.connect, tex->path,
+				&img->w, &img->h);
+		if (!img->img)
+			(printf("Error: mlx_xpm_file_to_image\n"), exit(1));
+		img->addr = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->len,
+				&img->endian);
+		tex = tex->next;
+	}
 }
 
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height)
@@ -54,15 +71,14 @@ void	get_texX(t_cub *cub, t_tex *tex)
 {
 	t_cam		*cam;
 	t_player	player;
-//	not sure if these two should be doubles or ints
-	int		p_posx;
-	int		p_posy;
+	double		p_posx;
+	double		p_posy;
 
 	init_textures(cub);
 	cam = &cub->cam;
 	player = cub->player;
-	p_posx = player.pos.x / TILE_SIZE;
 	p_posy = player.pos.y / TILE_SIZE;
+	p_posx = player.pos.x / TILE_SIZE;
 	if (cam->hit_type == 0)
 		cam->wallX = p_posy + cam->dist * cam->rayDir.y;
 	else

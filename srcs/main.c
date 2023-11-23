@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:28:51 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/22 16:58:54 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:07:41 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	init_game(t_cub *cub)
 	mlx_hook(cub->mlx.window, 2, 1L << 0, keypress, cub);
 	init_player_plane(&cub->player, &cub->cam, cub->map);
 	draw_screen(cub);
-//	mlx_put_image_to_window(cub->mlx.connect, cub->mlx.window, cub->mlx.img_background.img, 0, 0);
 	mlx_loop(cub->mlx.connect);
 }
 

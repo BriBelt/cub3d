@@ -6,28 +6,39 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/22 18:16:05 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:23:46 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	paint_background(t_cub *cub)
+void	load_background(t_cub *cub, int height, int end, int x)
 {
-	int				x;
 	int				y;
-	unsigned int	b_color;
+	t_mlx			*mlx;
+	int				start;
+	unsigned int	color;
+	t_img			frame;
 
 	y = 0;
-	b_color = 0x00000000;
+	mlx = &cub->mlx;
+	start = cub->start;
+	frame = mlx->frame;
+	while (y < start)
+	{
+		frame.addr[y * WIDTH + x] = cub->cceiling;
+		y++;
+	}
+	while (start < end)
+	{
+		color = get_tex_color(cub, start, height);
+		frame.addr[start * WIDTH + x] = color;
+		start++;
+	}
+	y = start;
 	while (y < HEIGHT)
 	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			mlx_pixel_put(cub->mlx.connect, cub->mlx.window, x, y, b_color);
-			x++;
-		}
+		frame.addr[y * WIDTH + x] = cub->cfloor;
 		y++;
 	}
 }
@@ -36,7 +47,6 @@ void	paint_ray(t_cub *cub, int *x)
 {
 	double			draw_height;
 	double			draw_end;
-	unsigned int	color;
 	int				start;
 
 	get_texX(cub, *cub->textures);
@@ -45,18 +55,18 @@ void	paint_ray(t_cub *cub, int *x)
 	if (start < 0)
 		start = 0;
 	draw_end = draw_height / 2 + HEIGHT / 2;
-	if (draw_end < 0)
+	if (draw_end >= HEIGHT)
 		draw_end = HEIGHT - 1;
-	while (start < draw_end)
-	{
-		color = get_tex_color(cub, start, draw_height);
-		mlx_pixel_put(cub->mlx.connect, cub->mlx.window, *x, start, color);
-		start++;
-	}
+	cub->start = start;
+	load_background(cub, (int)draw_height, (int)draw_end, *x);
 }
 
 void	draw_screen(t_cub *cub)
 {
-	paint_background(cub);
+	if (cub->mlx.frame.img)
+		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
+	create_image(cub->mlx, &cub->mlx.frame);
 	raycaster(cub);
+	mlx_put_image_to_window(cub->mlx.connect, cub->mlx.window,
+			cub->mlx.frame.img, 0, 0);
 }

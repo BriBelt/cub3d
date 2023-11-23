@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/22 18:11:12 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:30:16 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ typedef struct s_mlx
 {
 	void	*window;
 	void	*connect;
-	void	*background;
-	t_img	img_background;
+	t_img	frame;
 }				t_mlx;
 
 /* Structure for the textures. */
@@ -150,6 +149,9 @@ typedef struct s_cub
 	char			**map;
 	unsigned int	ceiling[3];
 	unsigned int	floor[3];
+	unsigned long	cceiling;
+	unsigned long	cfloor;
+	int				start;
 	t_cam			cam;
 	t_tex			**textures;
 	t_mlx			mlx;
@@ -159,44 +161,45 @@ typedef struct s_cub
 }					t_cub;
 
 /*		cub3d		*/
-int		check_extension(char *filename);
 /*		t_tex__utils	*/
-void	t_tex_free(t_tex **lst);
-int	valid_txt(t_tex *node);
-void	insert_node(t_tex **lst, t_tex *node);
-t_tex	*create_node(char *texture_path, int type);
-int		t_tex_size(t_tex *lst);
+void			t_tex_free(t_tex **lst);
+int				valid_txt(t_tex *node);
+void			insert_node(t_tex **lst, t_tex *node);
+t_tex			*create_node(char *texture_path, int type);
+int				t_tex_size(t_tex *lst);
 /*		tc_utils		*/
-int		check_rgb_code(unsigned int *rgb_code);
-int		only_numbers(char *str);
-int		check_extension(char *filename, char *ext);
+int				check_rgb_code(unsigned int *rgb_code);
+int				only_numbers(char *str);
+int				check_extension(char *filename, char *ext);
 /*		fetch_header_data		*/
-t_cub	*fetch_header_data(int file_fd);
+t_cub			*fetch_header_data(int file_fd);
 /*		map_parsing				*/
-char	**get_map(char *filename);
-int		valid_char(char c);
+char			**get_map(char *filename);
+int				valid_char(char c);
 /*		checkers				*/
-char	*get_spaced_line(char *str, int len);
-int		check_cub_struct(t_cub *cub);
+char			*get_spaced_line(char *str, int len);
+int				check_cub_struct(t_cub *cub);
 /*		array_utils				*/
-int		get_2d_array_size(char **array);
-size_t	get_longest_line(char **map);
-char	**copy_spaced_map(char **map);
-void	free_2d_array(char **array);
+int				get_2d_array_size(char **array);
+size_t			get_longest_line(char **map);
+char			**copy_spaced_map(char **map);
+void			free_2d_array(char **array);
 /*		images					*/
-t_img	create_image(t_mlx mlx);
-void	ft_mlx_pixel_put(t_img *img, int x, int y, int color);
+unsigned long	convert_rgb(unsigned int r, unsigned int g, unsigned int b);
+void			create_image(t_mlx mlx, t_img *img);
 /*		draw					*/
-void	paint_ray(t_cub *cub, int *x);
-void	draw_screen(t_cub *cub);
+void			load_background(t_cub *cub, int height, int end, int x);
+void			paint_ray(t_cub *cub, int *x);
+void			draw_screen(t_cub *cub);
 /*		player					*/
-void	init_player_plane(t_player *player, t_cam *cam, char **map);
+void			init_player_plane(t_player *player, t_cam *cam, char **map);
 /*		keyboard				*/
-int		keypress(int keycode, t_cub *cub);
+int				keypress(int keycode, t_cub *cub);
 /*		ray						*/
-void	raycaster(t_cub *cub);
+void			raycaster(t_cub *cub);
 /*		textures				*/
+void			destroy_textures(t_tex **textures, t_cub *cub);
 unsigned int	get_tex_color(t_cub *cub, double start, double draw_height);
-void	get_texX(t_cub *cub, t_tex *tex);
+void			get_texX(t_cub *cub, t_tex *tex);
 
 #endif

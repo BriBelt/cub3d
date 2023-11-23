@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:11:24 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/22 17:50:18 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:31:42 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,25 @@ void	manage_textures(t_cub *cub, char **array)
 
 void	assign_colors(t_cub *cub, unsigned int *rgb_code, char type)
 {
+	unsigned long	ceiling;
+	unsigned long	floor;
+
 	if (type == 'F')
 	{
 		cub->floor[0] = rgb_code[0];
 		cub->floor[1] = rgb_code[1];
 		cub->floor[2] = rgb_code[2];
+		floor = convert_rgb(cub->floor[0], cub->floor[1], cub->floor[2]);
+		cub->cfloor = floor;
 	}
 	else if (type == 'C')
 	{
 		cub->ceiling[0] = rgb_code[0];
 		cub->ceiling[1] = rgb_code[1];
 		cub->ceiling[2] = rgb_code[2];
+		ceiling = convert_rgb(cub->ceiling[0],
+				cub->ceiling[1], cub->ceiling[2]);
+		cub->cceiling = ceiling;
 	}
 }
 

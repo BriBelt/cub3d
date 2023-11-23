@@ -14,7 +14,7 @@ SRC_GNL = $(addprefix gnl/, $(GNL))
 
 OBJ = *.o
 CC = gcc -g
-FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -O3
 LINKS = -framework OpenGL -framework AppKit -lmlx
 
 NONE='\033[0m'
