@@ -6,133 +6,92 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/17 17:54:08 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:03:11 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	paint_background(t_cub *cub)
+void	load_background(t_cub *cub, int height, int end, int x)
 {
-	int				x;
 	int				y;
-	unsigned int	b_color;
+	t_mlx			*mlx;
+	int				start;
+	unsigned int	color;
+	t_img			frame;
 
-	y = 0;
-	b_color = 0x00000000;
-	while (y < HEIGHT)
+	y = -1;
+	mlx = &cub->mlx;
+	start = cub->start;
+	frame = mlx->frame;
+	while (++y < start)
+		frame.addr[y * WIDTH + x] = cub->cceiling;
+	while (start < end)
 	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			mlx_pixel_put(cub->mlx.connect, cub->mlx.window, x, y, b_color);
-			x++;
-		}
-		y++;
+		color = get_tex_color(cub, start, height);
+		frame.addr[start * WIDTH + x] = color;
+		start++;
 	}
+	while (start < HEIGHT)
+	{
+		frame.addr[start * WIDTH + x] = cub->cfloor;
+		start++;
+	}
+}
+
+t_img	select_texture(t_cub *cub, t_cam cam)
+{
+	t_tex			*curr;
+	int				type;
+
+	if (!cam.hit_type)
+	{
+		if (cam.rayDir.x < 0)
+			type = WE;
+		else
+			type = EA;
+	}
+	else if (cam.hit_type)
+	{
+		if (cam.rayDir.y < 0)
+			type = NO;
+		else
+			type = SO;
+	}
+	curr = *cub->textures;
+	while (curr)
+	{
+		if (curr->type == type)
+			return (curr->img);
+		curr = curr->next;
+	}
+	return (curr->img);
 }
 
 void	paint_ray(t_cub *cub, int *x)
 {
-//	double			wall_height;
 	double			draw_height;
 	double			draw_end;
-	unsigned int	color;
-	int				y;
+	int				start;
 
-	color = 0x00FF0000;
-	draw_height = (double)HEIGHT / cub->cam.dist;
-	printf("draw_height = %f\n", draw_height);
-	y = -draw_height / 2 + HEIGHT / 2;
-	printf("y = %i\n", y);
-	if (y < 0)
-		y = 0;
-	draw_end = fabs(draw_height / 2 + HEIGHT / 2);
-	printf("draw end = %f\n", draw_end);
-	if (draw_end < 0)
+	get_tex_x(cub, *cub->textures);
+	draw_height = HEIGHT / cub->cam.dist;
+	start = HEIGHT / 2 - draw_height / 2;
+	if (start < 0)
+		start = 0;
+	draw_end = draw_height / 2 + HEIGHT / 2;
+	if (draw_end >= HEIGHT)
 		draw_end = HEIGHT - 1;
-	while (y < draw_end)
-	{
-		printf("inside paint_ray while [%i]\n", y);
-		mlx_pixel_put(cub->mlx.connect, cub->mlx.window, *x, y, color);
-		y++;
-	}
-}
-
-void	raycaster(t_cub *cub)
-{
-	int			x;
-	t_cam		cam;
-	t_player	player;
-
-	x = 0;
-	cam = cub->cam;
-	player = cub->player;
-	while (x < WIDTH)
-	{
-		cam.cam_x = (2 * x) / (double)WIDTH - 1;
-		printf("cam x = %f\n", cam.cam_x);
-		cam.rayDir.x = player.dir.x + cam.plane.x * cam.cam_x;
-		cam.rayDir.y = player.dir.y + cam.plane.y * cam.cam_x;
-		if (cam.rayDir.x == 0)
-			cam.deltaDistX = 1e30;
-		else
-			cam.deltaDistX = fabs(1 / cam.rayDir.x);
-		if (cam.rayDir.y == 0)
-			cam.deltaDistY = 1e30;
-		else
-			cam.deltaDistY = fabs(1 / cam.rayDir.y);
-		cam.mapX = (int)(player.pos.x / TILE_SIZE);
-		cam.mapY = (int)(player.pos.y / TILE_SIZE);
-		if (cam.rayDir.x < 0)
-		{
-			cam.stepX = -1;
-			cam.sideDistX = cam.mapX - (player.pos.x / TILE_SIZE) * cam.deltaDistX;
-		}
-		else
-		{
-			cam.stepX = 1;
-			cam.sideDistX = cam.mapX + 1 - (player.pos.x / TILE_SIZE) * cam.deltaDistX;
-		}
-		if (cam.rayDir.y < 0)
-		{
-			cam.stepY = -1;
-			cam.sideDistY = cam.mapY - (player.pos.y / TILE_SIZE) * cam.deltaDistY;
-		}
-		else
-		{
-			cam.stepY = 1;
-			cam.sideDistY = cam.mapY + 1 - (player.pos.y / TILE_SIZE) * cam.deltaDistY;
-		}
-		while (!cam.wall_hit)
-		{
-			if (cam.sideDistX < cam.sideDistY)
-			{
-				cam.hit_type = 0;
-				cam.sideDistX += cam.deltaDistX;
-				cam.mapX += cam.stepX;
-			}
-			else
-			{
-				cam.hit_type = 1;
-				cam.sideDistY += cam.deltaDistY;
-				cam.mapY += cam.stepY;
-			}
-			if (cub->map[cam.mapY][cam.mapX] != '0')
-				cam.wall_hit = 1;
-		}
-		if (cam.hit_type == 0)
-			cam.dist = cam.sideDistX - cam.deltaDistX;
-		else
-			cam.dist = cam.sideDistY - cam.deltaDistY;
-		printf("cam distance = %f\n", cam.dist);
-		paint_ray(cub, &x);
-		x++;
-	}
+	cub->start = start;
+	load_background(cub, (int)draw_height, (int)draw_end, *x);
 }
 
 void	draw_screen(t_cub *cub)
 {
-	paint_background(cub);
+	if (cub->mlx.frame.img)
+		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
+	create_image(cub->mlx, &cub->mlx.frame);
 	raycaster(cub);
+	mlx_put_image_to_window(cub->mlx.connect, cub->mlx.window,
+		cub->mlx.frame.img, 0, 0);
 }

@@ -1,13 +1,13 @@
 F 200,100,20
-C 200,100,20
+C 000,100,20
 
-NO bla
-SO bla
-EA bla
-WE bla
+NO textures/floor.xpm
+SO textures/texture.xpm
+EA textures/floor.xpm
+WE textures/texture.xpm
 
 111111111
-1000W0001
+1000E0001
 100000001
 100010001
 100000001

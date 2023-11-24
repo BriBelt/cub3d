@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 16:42:36 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/10/31 14:55:48 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:50:35 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ char	**copy_spaced_map(char **map)
 	while (j <= size + 1)
 	{
 		if (!j || j == size + 1)
-			spaced_map[j] = get_spaced_line(NULL, longest_line); 
+			spaced_map[j] = get_spaced_line(NULL, longest_line);
 		else
-			spaced_map[j] = get_spaced_line(map[i++], longest_line); 
+			spaced_map[j] = get_spaced_line(map[i++], longest_line);
 		j++;
 	}
 	return (spaced_map);

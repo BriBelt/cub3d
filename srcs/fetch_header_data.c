@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:11:24 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/10/26 15:07:43 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:23:19 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,38 @@ void	manage_textures(t_cub *cub, char **array)
 		type = WE;
 	if (!ft_strcmp(array[0], "EA"))
 		type = EA;
-	insert_node(cub->textures, create_node(array[1], type));
+	insert_node(cub->textures, create_node(ft_strtrim(array[1], "\n"), type));
+}
+
+void	assign_colors(t_cub *cub, unsigned int *rgb_code, char type)
+{
+	unsigned long	ceiling;
+	unsigned long	floor;
+
+	if (type == 'F')
+	{
+		cub->floor[0] = rgb_code[0];
+		cub->floor[1] = rgb_code[1];
+		cub->floor[2] = rgb_code[2];
+		floor = convert_rgb(cub->floor[0], cub->floor[1], cub->floor[2]);
+		cub->cfloor = floor;
+	}
+	else if (type == 'C')
+	{
+		cub->ceiling[0] = rgb_code[0];
+		cub->ceiling[1] = rgb_code[1];
+		cub->ceiling[2] = rgb_code[2];
+		ceiling = convert_rgb(cub->ceiling[0],
+				cub->ceiling[1], cub->ceiling[2]);
+		cub->cceiling = ceiling;
+	}
 }
 
 int	manage_colors(t_cub *cub, char **array, char type)
 {
-	char	**rgb;
-	int		rgb_code[3];
-	int		i;
+	char			**rgb;
+	unsigned int	rgb_code[3];
+	int				i;
 
 	rgb = ft_split(array[1], ',');
 	free_2d_array(array);
@@ -51,18 +75,7 @@ int	manage_colors(t_cub *cub, char **array, char type)
 	rgb_code[2] = ft_atoi(rgb[2]);
 	if (!check_rgb_code(rgb_code))
 		return (printf(ERRCOLOR), free_2d_array(rgb), 0);
-	if (type == 'F')
-	{
-		cub->floor[0] = rgb_code[0];
-		cub->floor[1] = rgb_code[1];
-		cub->floor[2] = rgb_code[2];
-	}
-	else if (type == 'C')
-	{
-		cub->ceiling[0] = rgb_code[0];
-		cub->ceiling[1] = rgb_code[1];
-		cub->ceiling[2] = rgb_code[2];
-	}
+	assign_colors(cub, rgb_code, type);
 	return (free_2d_array(rgb), 1);
 }
 
@@ -72,6 +85,8 @@ int	clean_line(t_cub *cub, char *line)
 
 	if (!line)
 		return (0);
+	if (line && !ft_strcmp(line, ""))
+		return (free(line), 0);
 	array = ft_split(line, ' ');
 	if (!ft_strcmp(array[0], "F"))
 		return (manage_colors(cub, array, 'F'));
@@ -80,10 +95,16 @@ int	clean_line(t_cub *cub, char *line)
 	if (!ft_strcmp(array[0], "NO") || !ft_strcmp(array[0], "SO")
 		|| !ft_strcmp(array[0], "WE") || !ft_strcmp(array[0], "EA"))
 		manage_textures(cub, array);
+//	else
+//		return (printf(ERRTEXT), free_2d_array(array), 0);
 	free_2d_array(array);
 	return (1);
 }
 
+/* After line 127, we used to have a "if (!line) -> break;" we removed it but we
+ * are not sure if it could cause any problems. In clean_line (86 to 89) we used
+ * to have both conditions together and free the line in this function, we need
+ * to check if everything works.*/
 t_cub	*fetch_header_data(int file_fd)
 {
 	char	*line;
@@ -104,14 +125,10 @@ t_cub	*fetch_header_data(int file_fd)
 			free(line);
 			line = get_next_line(file_fd);
 		}
-		if (!line)
-			break ;
 		if (!clean_line(cub, line))
-			return (free(line), NULL);
-		// put error
+			return (NULL);
 		free(line);
 		line = get_next_line(file_fd);
 	}
-	close(file_fd);
-	return (cub);
+	return (close(file_fd), cub);
 }

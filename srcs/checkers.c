@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:03:31 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/10/26 12:44:04 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:25:13 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,25 +98,24 @@ int	check_map(char **map)
 int	check_textures(t_tex **textures)
 {
 	t_tex	*curr;
-	t_tex	*check;
-	int		size;
+	t_tex	*c;
 	int		i;
 	int		j;
 
-	size = t_tex_size(*textures);
-	if (size != 4)
-		return (0);
+	(*textures)->size = t_tex_size(*textures);
+	if ((*textures)->size != 4)
+		return (t_tex_free(textures), 0);
 	curr = *textures;
-	check = *textures;
+	c = *textures;
 	i = 0;
 	while (curr)
 	{
 		j = 0;
-		while (check)
+		while (c)
 		{
-			if (i != j && check->type == curr->type)
-				return (0);
-			check = check->next;
+			if ((i != j && c->type == curr->type) || !valid_txt(c))
+				return (t_tex_free(textures), 0);
+			c = c->next;
 			j++;
 		}
 		curr = curr->next;
