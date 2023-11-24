@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:03:31 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 18:25:13 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:04:30 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,11 @@ int	check_textures(t_tex **textures)
 int	check_cub_struct(t_cub *cub)
 {
 	if (!check_textures(cub->textures))
-		return (printf(ERRTEXT), 0);
+		return (free_2d_array(cub->map), printf(ERRTEXT), 0);
 	if (!check_map(cub->map))
-		return (printf(ERRMAP), 0);
+	{
+		free(cub);
+		return (t_tex_free(cub->textures), printf(ERRMAP), 0);
+	}
 	return (1);
 }

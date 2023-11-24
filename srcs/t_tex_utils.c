@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 12:27:44 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/23 18:23:48 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 12:37:59 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_tex	*create_node(char *texture_path, int type)
 	new = malloc(sizeof(t_tex));
 	if (!new)
 		return (printf(ERRMEM, "create_node"), NULL);
-	new->path = ft_strdup(texture_path);
+	new->path = texture_path;
 	new->type = type;
 	new->next = NULL;
 	return (new);

@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:11:24 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 18:23:19 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:59:18 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	manage_colors(t_cub *cub, char **array, char type)
 	int				i;
 
 	rgb = ft_split(array[1], ',');
+	if (ft_strcmp(array[0], "F") && ft_strcmp(array[0], "C"))
+		return (printf(ERRCOL2), free_2d_array(array), free_2d_array(rgb), 0);
 	free_2d_array(array);
 	if (!rgb)
 		return (0);
@@ -84,7 +86,7 @@ int	clean_line(t_cub *cub, char *line)
 	char	**array;
 
 	if (!line)
-		return (0);
+		return (1);
 	if (line && !ft_strcmp(line, ""))
 		return (free(line), 0);
 	array = ft_split(line, ' ');
@@ -95,8 +97,6 @@ int	clean_line(t_cub *cub, char *line)
 	if (!ft_strcmp(array[0], "NO") || !ft_strcmp(array[0], "SO")
 		|| !ft_strcmp(array[0], "WE") || !ft_strcmp(array[0], "EA"))
 		manage_textures(cub, array);
-//	else
-//		return (printf(ERRTEXT), free_2d_array(array), 0);
 	free_2d_array(array);
 	return (1);
 }
@@ -115,7 +115,7 @@ t_cub	*fetch_header_data(int file_fd)
 		return (printf(ERRMEM, "fetch_header_data"), NULL);
 	cub->textures = malloc(sizeof(t_tex *));
 	if (!cub->textures)
-		return (printf(ERRMEM, "fetch_header_data"), NULL);
+		return (printf(ERRMEM, "fetch_header_data"), free(cub), NULL);
 	*cub->textures = NULL;
 	line = get_next_line(file_fd);
 	while (line)
@@ -126,7 +126,7 @@ t_cub	*fetch_header_data(int file_fd)
 			line = get_next_line(file_fd);
 		}
 		if (!clean_line(cub, line))
-			return (NULL);
+			return (free(cub), free(cub->textures), free(line), NULL);
 		free(line);
 		line = get_next_line(file_fd);
 	}

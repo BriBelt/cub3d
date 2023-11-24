@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:35:37 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/02 17:02:17 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:00:13 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	**get_map(char *filename)
 		if (!ft_strcmp(line, "\n"))
 			break ;
 		if (!map_valid_chars(line))
-			return (free(line), close(file_fd), NULL);
+			return (free_2d_array(map), free(line), close(file_fd), NULL);
 		map[i++] = ft_strtrim(line, "\n");
 		free(line);
 		line = get_next_line(file_fd);
@@ -109,7 +109,7 @@ char	**get_map(char *filename)
 	while (line)
 	{
 		if (ft_strcmp(line, "\n"))
-			return (free(line), close(file_fd), NULL);
+			return (free_2d_array(map), free(line), close(file_fd), NULL);
 		free(line);
 		line = get_next_line(file_fd);
 	}

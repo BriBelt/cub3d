@@ -6,11 +6,16 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:28:51 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/23 18:25:28 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:05:08 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+void	leaks(void)
+{
+	system("leaks cub3D");
+}
 
 void	init_game(t_cub *cub)
 {
@@ -24,15 +29,10 @@ void	init_game(t_cub *cub)
 	mlx_loop(cub->mlx.connect);
 }
 
-int	exec_game(t_cub *cub)
-{
-	init_game(cub);
-	return (0);
-}
-
 void	free_cub(t_cub *cub)
 {
 	free_2d_array(cub->map);
+	destroy_textures(cub->textures, cub);
 	t_tex_free(cub->textures);
 	free(cub);
 }
@@ -56,7 +56,7 @@ t_cub	*parsing(char *filename)
 	if (!cub->map)
 		return (printf(ERRMAP), NULL);
 	if (!check_cub_struct(cub))
-		return (NULL);
+		return (free(cub), NULL);
 	return (cub);
 }
 
@@ -64,13 +64,13 @@ int	main(int argc, char **argv)
 {
 	t_cub	*cub;
 
+	atexit(leaks);
 	if (argc != 2)
 		return (printf(USAGE), 1);
 	cub = parsing(argv[1]);
 	if (!cub)
-		return (1);
-	if (exec_game(cub))
-		return (1);
+		return (free(cub), 1);
+	init_game(cub);
 	free_cub(cub);
 	return (0);
 }

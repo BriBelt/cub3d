@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 18:03:11 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 11:58:45 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	load_background(t_cub *cub, int height, int end, int x)
 		frame.addr[start * WIDTH + x] = color;
 		start++;
 	}
-	while (start < HEIGHT)
+	while (start < HEIGHT - 1)
 	{
 		frame.addr[start * WIDTH + x] = cub->cfloor;
 		start++;
@@ -88,10 +88,11 @@ void	paint_ray(t_cub *cub, int *x)
 
 void	draw_screen(t_cub *cub)
 {
-	if (cub->mlx.frame.img)
-		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
+//	if (cub->mlx.frame.img)
+//		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
 	create_image(cub->mlx, &cub->mlx.frame);
 	raycaster(cub);
+	mlx_clear_window(cub->mlx.connect, cub->mlx.window);
 	mlx_put_image_to_window(cub->mlx.connect, cub->mlx.window,
 		cub->mlx.frame.img, 0, 0);
 }

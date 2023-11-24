@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 18:17:50 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:14:36 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define ERRCOLOR "Error: Non-valid RGB value\n"
 # define ERRTEXT "Error: Non-valid textures\n"
 # define ERRMAP "Error: Non-valid map\n"
+# define ERRCOL2 "Error: Non-valid color identifier\n"
 
 /*			KEYBOARD		*/
 # define ESC 53
@@ -34,7 +35,7 @@
 /*		WINDOW			*/
 # define WIDTH 1024 
 # define HEIGHT 512 
-# define TILE_SIZE 16
+# define TILE_SIZE 16 
 
 # include <stdio.h>
 # include <fcntl.h>
@@ -196,6 +197,7 @@ void			draw_screen(t_cub *cub);
 /*		player					*/
 void			init_player_plane(t_player *player, t_cam *cam, char **map);
 /*		keyboard				*/
+void			close_game(t_cub *cub);
 int				keypress(int keycode, t_cub *cub);
 /*		moves					*/
 void			move_up_down(int keycode, t_cub *cub);

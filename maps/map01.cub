@@ -6,10 +6,10 @@ C 200,200,0
 
 
 
-NO holaestoesunpath
-SO      unpath
-WE   path
-EA ultimo path
+NO textures/floor.xpm
+SO textures/texture.xpm
+EA textures/floor.xpm
+WE textures/texture.xpm
 
 
 
