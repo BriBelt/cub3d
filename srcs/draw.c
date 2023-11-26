@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:15:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/24 11:58:45 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:30:51 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ t_img	select_texture(t_cub *cub, t_cam cam)
 
 	if (!cam.hit_type)
 	{
-		if (cam.rayDir.x < 0)
+		if (cam.raydir.x < 0)
 			type = WE;
 		else
 			type = EA;
 	}
 	else if (cam.hit_type)
 	{
-		if (cam.rayDir.y < 0)
+		if (cam.raydir.y < 0)
 			type = NO;
 		else
 			type = SO;
@@ -88,8 +88,6 @@ void	paint_ray(t_cub *cub, int *x)
 
 void	draw_screen(t_cub *cub)
 {
-//	if (cub->mlx.frame.img)
-//		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
 	create_image(cub->mlx, &cub->mlx.frame);
 	raycaster(cub);
 	mlx_clear_window(cub->mlx.connect, cub->mlx.window);

@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:43:18 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/24 11:38:39 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:30:51 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,29 @@ int	collision(double x, double y, char **map)
 
 void	ray_calc(t_player player, t_cam *cam)
 {
-	if (cam->rayDir.x < 0)
+	if (cam->raydir.x < 0)
 	{
-		cam->stepX = -1;
-		cam->sideDistX = ((player.pos.x / TILE_SIZE) - cam->mapX)
-			* cam->deltaDistX;
+		cam->step_x = -1;
+		cam->sidedist_x = ((player.pos.x / TILE_SIZE) - cam->map_x)
+			* cam->deltadist_x;
 	}
 	else
 	{
-		cam->stepX = 1;
-		cam->sideDistX = (cam->mapX + 1 - (player.pos.x / TILE_SIZE))
-			* cam->deltaDistX;
+		cam->step_x = 1;
+		cam->sidedist_x = (cam->map_x + 1 - (player.pos.x / TILE_SIZE))
+			* cam->deltadist_x;
 	}
-	if (cam->rayDir.y < 0)
+	if (cam->raydir.y < 0)
 	{
-		cam->stepY = -1;
-		cam->sideDistY = ((player.pos.y / TILE_SIZE) - cam->mapY)
-			* cam->deltaDistY;
+		cam->step_y = -1;
+		cam->sidedist_y = ((player.pos.y / TILE_SIZE) - cam->map_y)
+			* cam->deltadist_y;
 	}
 	else
 	{
-		cam->stepY = 1;
-		cam->sideDistY = (cam->mapY + 1 - (player.pos.y / TILE_SIZE))
-			* cam->deltaDistY;
+		cam->step_y = 1;
+		cam->sidedist_y = (cam->map_y + 1 - (player.pos.y / TILE_SIZE))
+			* cam->deltadist_y;
 	}
 }
 
@@ -56,26 +56,26 @@ void	throw_ray(t_cub *cub, t_cam *cam)
 {
 	while (!cam->wall_hit)
 	{
-		if (cam->sideDistX < cam->sideDistY)
+		if (cam->sidedist_x < cam->sidedist_y)
 		{
 			cam->hit_type = 0;
-			cam->sideDistX += cam->deltaDistX;
-			cam->mapX += cam->stepX;
+			cam->sidedist_x += cam->deltadist_x;
+			cam->map_x += cam->step_x;
 		}
 		else
 		{
 			cam->hit_type = 1;
-			cam->sideDistY += cam->deltaDistY;
-			cam->mapY += cam->stepY;
+			cam->sidedist_y += cam->deltadist_y;
+			cam->map_y += cam->step_y;
 		}
-		if (cub->map[cam->mapY][cam->mapX]
-				&& cub->map[cam->mapY][cam->mapX] == '1')
+		if (cub->map[cam->map_y][cam->map_x]
+				&& cub->map[cam->map_y][cam->map_x] == '1')
 			cam->wall_hit = 1;
 	}
 	if (cam->hit_type == 0)
-		cam->dist = cam->sideDistX - cam->deltaDistX;
+		cam->dist = cam->sidedist_x - cam->deltadist_x;
 	else
-		cam->dist = cam->sideDistY - cam->deltaDistY;
+		cam->dist = cam->sidedist_y - cam->deltadist_y;
 }
 
 void	raycaster(t_cub *cub)
@@ -89,16 +89,16 @@ void	raycaster(t_cub *cub)
 	player = cub->player;
 	while (x < WIDTH)
 	{
-		cam->stepX = 0;
-		cam->stepY = 0;
+		cam->step_x = 0;
+		cam->step_y = 0;
 		cam->wall_hit = 0;
 		cam->cam_x = ((2 * x) / (double)WIDTH) - 1;
-		cam->rayDir.x = player.dir.x + cam->plane.x * cam->cam_x;
-		cam->rayDir.y = player.dir.y + cam->plane.y * cam->cam_x;
-		cam->deltaDistX = fabs(1 / cam->rayDir.x);
-		cam->deltaDistY = fabs(1 / cam->rayDir.y);
-		cam->mapX = (player.pos.x / TILE_SIZE);
-		cam->mapY = (player.pos.y / TILE_SIZE);
+		cam->raydir.x = player.dir.x + cam->plane.x * cam->cam_x;
+		cam->raydir.y = player.dir.y + cam->plane.y * cam->cam_x;
+		cam->deltadist_x = fabs(1 / cam->raydir.x);
+		cam->deltadist_y = fabs(1 / cam->raydir.y);
+		cam->map_x = (player.pos.x / TILE_SIZE);
+		cam->map_y = (player.pos.y / TILE_SIZE);
 		(ray_calc(player, cam), throw_ray(cub, cam));
 		paint_ray(cub, &x);
 		x++;

@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:36:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/24 14:14:36 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:06:19 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,40 +109,40 @@ typedef struct s_minimap
 	int	y_size;
 }				t_minimap;
 
-typedef struct	s_vector
+typedef struct s_vector
 {
 	double	x;
 	double	y;
 }				t_vector;
 
-typedef struct	s_player
+typedef struct s_player
 {
 	t_vector	pos;
 	t_vector	dir;
 }				t_player;
 
-typedef struct	s_cam
+typedef struct s_cam
 {
 	t_vector	plane;
-	t_vector	rayDir;
-	int			stepX;
-	int			stepY;
-	int			mapX;
-	int			mapY;
+	t_vector	raydir;
+	int			step_x;
+	int			step_y;
+	int			map_x;
+	int			map_y;
 	int			wall_hit;
 	int			hit_type;
 	double		fov;
 	double		cam_x;
-	double		sideDistX;
-	double		sideDistY;
-	double		deltaDistX;
-	double		deltaDistY;
+	double		sidedist_x;
+	double		sidedist_y;
+	double		deltadist_x;
+	double		deltadist_y;
 	double		dist;
-	double		wallX;
-	int			texX;
-	int			texY;
-	double		texStep;
-	double		texPos;
+	double		wall_x;
+	int			tex_x;
+	int			tex_y;
+	double		tex_step;
+	double		tex_pos;
 }				t_cam;
 
 /* Main Structure for game. */
@@ -154,6 +154,7 @@ typedef struct s_cub
 	unsigned long	cceiling;
 	unsigned long	cfloor;
 	int				start;
+	int				color_count;
 	t_cam			cam;
 	t_tex			**textures;
 	t_mlx			mlx;
@@ -162,7 +163,6 @@ typedef struct s_cub
 	t_player		player;
 }					t_cub;
 
-/*		cub3d		*/
 /*		t_tex__utils	*/
 void			t_tex_free(t_tex **lst);
 int				valid_txt(t_tex *node);
@@ -174,11 +174,12 @@ int				check_rgb_code(unsigned int *rgb_code);
 int				only_numbers(char *str);
 int				check_extension(char *filename, char *ext);
 /*		fetch_header_data		*/
-t_cub			*fetch_header_data(int file_fd);
+int				fetch_header_data(int file_fd, t_cub *cub);
 /*		map_parsing				*/
-char			**get_map(char *filename);
+int				get_map(char *filename, t_cub *cub);
 int				valid_char(char c);
 /*		checkers				*/
+int				check_textures(t_tex **textures);
 char			*get_spaced_line(char *str, int len);
 int				check_cub_struct(t_cub *cub);
 /*		array_utils				*/
