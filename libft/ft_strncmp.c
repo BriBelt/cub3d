@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:27:29 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/06/13 15:30:42 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:10:21 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
-}	
+}
 /*int	main(void)
 {
 	size_t	n;

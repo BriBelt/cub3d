@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 11:29:56 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/24 14:09:47 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:36:47 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ unsigned long	convert_rgb(unsigned int r, unsigned int g, unsigned int b)
 void	create_image(t_mlx mlx, t_img *img)
 {
 	img->img = mlx_new_image(mlx.connect, WIDTH, HEIGHT);
+	if (!img->img)
+	{
+		printf("Error: Could not create image\n");
+		exit(1);
+	}
 	img->addr = (int *)mlx_get_data_addr(img->img, &img->bpp,
 			&img->len, &img->endian);
+	if (!img->addr)
+	{
+		printf("Error: Could not get image address\n");
+		exit(1);
+	}
 }

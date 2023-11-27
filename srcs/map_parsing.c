@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:35:37 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/26 17:06:55 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:59:06 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,15 @@ int	get_map(char *filename, t_cub *cub)
 	i = 0;
 	arr_size = get_array_size(filename);
 	if (!arr_size)
-		return (0);
+		return (free(cub), 0);
 	file_fd = open(filename, O_RDONLY);
 	if (file_fd == -1)
-		return (printf(ERROPEN, filename), 0);
+		return (printf(ERROPEN, filename), free(cub), 0);
 	cub->map = ft_calloc(arr_size + 1, sizeof(char *));
 	if (!cub->map)
 		return (printf(ERRMEM, "get_map"), close(file_fd), 0);
 	line = get_next_line(file_fd);
 	if (!get_map2(cub, line, file_fd, i))
-		return (0);
+		return (free(cub), 0);
 	return (close(file_fd), 1);
 }

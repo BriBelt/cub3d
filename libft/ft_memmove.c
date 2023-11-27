@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:44:15 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/03/01 10:23:24 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:09:56 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 		}
 	}
 	return (dst);
-}	
+}
 /*#include <stdio.h>
 #include <string.h>
 int	main(void)

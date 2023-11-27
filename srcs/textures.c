@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:45:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/26 16:31:10 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:36:06 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	get_tex_x(t_cub *cub, t_tex *tex)
 	double		p_posx;
 	double		p_posy;
 
+	(void)tex;
 	cam = &cub->cam;
 	player = cub->player;
 	p_posy = player.pos.y / TILE_SIZE;
@@ -81,9 +82,9 @@ void	get_tex_x(t_cub *cub, t_tex *tex)
 	else
 		cam->wall_x = p_posx + cam->dist * cam->raydir.x;
 	cam->wall_x -= floor(cam->wall_x);
-	cam->tex_x = (int)(cam->wall_x * (double)tex->img.w);
+	cam->tex_x = (int)(cam->wall_x * (double)TILE_SIZE);
 	if (cam->hit_type == 1 && cam->raydir.y > 0)
-		cam->tex_x = tex->img.w - cam->tex_x - 1;
+		cam->tex_x = TILE_SIZE - cam->tex_x - 1;
 	if (cam->hit_type == 0 && cam->raydir.x < 0)
-		cam->tex_x = tex->img.w - cam->tex_x - 1;
+		cam->tex_x = TILE_SIZE - cam->tex_x - 1;
 }

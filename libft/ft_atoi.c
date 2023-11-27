@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:46:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/02/17 10:29:41 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:09:45 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	ft_atoi(const char *str)
 	if (!(str[i] >= '0' && str[i] <= '9'))
 		return (0);
 	while ((str[i] != '\0') && (str[i] >= '0') && (str[i] <= '9'))
-	{		
+	{
 		res = res * 10 + str[i] - '0';
 		i++;
 	}
 	return (sig * res);
-}	
+}
 /*#include <stdio.h>
 #include <stdlib.h>
 int	main(void)

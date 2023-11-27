@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 13:18:57 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/03/01 10:28:31 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:10:39 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 				return ((char *)haystack + i);
 			j++;
 		}
-			j = 0;
+		j = 0;
 		i++;
 	}
 	return (0);
