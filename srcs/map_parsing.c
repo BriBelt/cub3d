@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:35:37 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/02 17:02:17 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:06:55 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,25 +72,8 @@ int	get_array_size(char *filename)
 	return (size);
 }
 
-char	**get_map(char *filename)
+int	get_map2(t_cub *cub, char *line, int file_fd, int i)
 {
-	int		arr_size;
-	int		file_fd;
-	char	*line;
-	char	**map;
-	int		i;
-
-	arr_size = get_array_size(filename);
-	if (!arr_size)
-		return (NULL);
-	file_fd = open(filename, O_RDONLY);
-	if (file_fd == -1)
-		return (printf(ERROPEN, filename), NULL);
-	map = ft_calloc(arr_size + 1, sizeof(char *));
-	if (!map)
-		return (printf(ERRMEM, "get_map"), close(file_fd), NULL);
-	line = get_next_line(file_fd);
-	i = 0;
 	while (line && (!ft_strcmp(line, "\n") || !map_valid_chars(line)))
 	{
 		free(line);
@@ -101,17 +84,40 @@ char	**get_map(char *filename)
 		if (!ft_strcmp(line, "\n"))
 			break ;
 		if (!map_valid_chars(line))
-			return (free(line), close(file_fd), NULL);
-		map[i++] = ft_strtrim(line, "\n");
+			return (free_2d_array(cub->map), free(line), close(file_fd), 0);
+		cub->map[i++] = ft_strtrim(line, "\n");
 		free(line);
 		line = get_next_line(file_fd);
 	}
 	while (line)
 	{
 		if (ft_strcmp(line, "\n"))
-			return (free(line), close(file_fd), NULL);
+			return (free_2d_array(cub->map), free(line), close(file_fd), 0);
 		free(line);
 		line = get_next_line(file_fd);
 	}
-	return (close(file_fd), map);
+	return (1);
+}
+
+int	get_map(char *filename, t_cub *cub)
+{
+	int		arr_size;
+	int		file_fd;
+	int		i;
+	char	*line;
+
+	i = 0;
+	arr_size = get_array_size(filename);
+	if (!arr_size)
+		return (0);
+	file_fd = open(filename, O_RDONLY);
+	if (file_fd == -1)
+		return (printf(ERROPEN, filename), 0);
+	cub->map = ft_calloc(arr_size + 1, sizeof(char *));
+	if (!cub->map)
+		return (printf(ERRMEM, "get_map"), close(file_fd), 0);
+	line = get_next_line(file_fd);
+	if (!get_map2(cub, line, file_fd, i))
+		return (0);
+	return (close(file_fd), 1);
 }

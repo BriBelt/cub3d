@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:11:24 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 18:23:19 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:08:02 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	assign_colors(t_cub *cub, unsigned int *rgb_code, char type)
 		cub->floor[2] = rgb_code[2];
 		floor = convert_rgb(cub->floor[0], cub->floor[1], cub->floor[2]);
 		cub->cfloor = floor;
+		cub->color_count++;
 	}
 	else if (type == 'C')
 	{
@@ -49,6 +50,7 @@ void	assign_colors(t_cub *cub, unsigned int *rgb_code, char type)
 		ceiling = convert_rgb(cub->ceiling[0],
 				cub->ceiling[1], cub->ceiling[2]);
 		cub->cceiling = ceiling;
+		cub->color_count++;
 	}
 }
 
@@ -59,6 +61,8 @@ int	manage_colors(t_cub *cub, char **array, char type)
 	int				i;
 
 	rgb = ft_split(array[1], ',');
+	if (ft_strcmp(array[0], "F") && ft_strcmp(array[0], "C"))
+		return (printf(ERRCOL2), free_2d_array(array), free_2d_array(rgb), 0);
 	free_2d_array(array);
 	if (!rgb)
 		return (0);
@@ -84,7 +88,7 @@ int	clean_line(t_cub *cub, char *line)
 	char	**array;
 
 	if (!line)
-		return (0);
+		return (1);
 	if (line && !ft_strcmp(line, ""))
 		return (free(line), 0);
 	array = ft_split(line, ' ');
@@ -95,27 +99,18 @@ int	clean_line(t_cub *cub, char *line)
 	if (!ft_strcmp(array[0], "NO") || !ft_strcmp(array[0], "SO")
 		|| !ft_strcmp(array[0], "WE") || !ft_strcmp(array[0], "EA"))
 		manage_textures(cub, array);
-//	else
-//		return (printf(ERRTEXT), free_2d_array(array), 0);
 	free_2d_array(array);
 	return (1);
 }
 
-/* After line 127, we used to have a "if (!line) -> break;" we removed it but we
- * are not sure if it could cause any problems. In clean_line (86 to 89) we used
- * to have both conditions together and free the line in this function, we need
- * to check if everything works.*/
-t_cub	*fetch_header_data(int file_fd)
+int	fetch_header_data(int file_fd, t_cub *cub)
 {
 	char	*line;
-	t_cub	*cub;
 
-	cub = malloc(sizeof(t_cub));
-	if (!cub)
-		return (printf(ERRMEM, "fetch_header_data"), NULL);
+	cub->color_count = 0;
 	cub->textures = malloc(sizeof(t_tex *));
 	if (!cub->textures)
-		return (printf(ERRMEM, "fetch_header_data"), NULL);
+		return (printf(ERRMEM, "fetch_header_data"), 0);
 	*cub->textures = NULL;
 	line = get_next_line(file_fd);
 	while (line)
@@ -126,9 +121,11 @@ t_cub	*fetch_header_data(int file_fd)
 			line = get_next_line(file_fd);
 		}
 		if (!clean_line(cub, line))
-			return (NULL);
+			return ((t_tex_free(cub->textures), free(line)), 0);
 		free(line);
 		line = get_next_line(file_fd);
 	}
-	return (close(file_fd), cub);
+	if (cub->color_count != 2)
+		return (printf(ERRCOL2), (t_tex_free(cub->textures), 0));
+	return (close(file_fd), 1);
 }

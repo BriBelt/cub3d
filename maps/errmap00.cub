@@ -3,16 +3,16 @@ F 220,100,0
 C 200,200,0
 
 
-NO holaestoesunpath
-SO      unpath
-WE   path
-EA ultimo path
+NO textures/42.xpm
+SO textures/texture.xpm
+EA textures/42.xpm
+WE textures/texture.xpm
 
                 1
 11111111       101
 10W01001        1 
-10010101
-11111111
+10010100
+1111111
 
 
 

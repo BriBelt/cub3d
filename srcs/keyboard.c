@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:35:51 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 17:43:42 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:04:21 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	close_game(t_cub *cub)
 {
 	if (cub->mlx.frame.img)
 		mlx_destroy_image(cub->mlx.connect, cub->mlx.frame.img);
+	mlx_clear_window(cub->mlx.connect, cub->mlx.window);
 	destroy_textures(cub->textures, cub);
 	mlx_destroy_window(cub->mlx.connect, cub->mlx.window);
 	exit(0);

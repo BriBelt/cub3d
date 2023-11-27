@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:03:31 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 18:25:13 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:06:00 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ char	*get_spaced_line(char *str, int len)
 	return (spaced_line);
 }
 
-int	check_map(char **map)
+int	check_map(char **map, char **s_map)
 {
-	char		**s_map;
 	int			arr_y_size;
 	int			i;
 	size_t		j;
@@ -126,9 +125,12 @@ int	check_textures(t_tex **textures)
 
 int	check_cub_struct(t_cub *cub)
 {
-	if (!check_textures(cub->textures))
-		return (printf(ERRTEXT), 0);
-	if (!check_map(cub->map))
+	char	**s_map;
+
+	s_map = NULL;
+	if (!cub->map)
 		return (printf(ERRMAP), 0);
+	if (!check_map(cub->map, s_map))
+		return (printf(ERRMAP), free_2d_array(cub->map), 0);
 	return (1);
 }

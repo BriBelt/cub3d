@@ -6,7 +6,7 @@
 /*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 14:45:38 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/23 17:32:08 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:31:10 by bbeltran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ unsigned int	get_tex_color(t_cub *cub, double start, double draw_height)
 	cam = &cub->cam;
 	img = select_texture(cub, *cam);
 	step = 1.0 * img.h / draw_height;
-	cam->texPos = (start - HEIGHT / 2 + draw_height / 2) * step;
-	cam->texY = (int)cam->texPos & (img.h - 1);
-	cam->texPos += step;
-	color = img.addr[img.h * cam->texY + cam->texX];
+	cam->tex_pos = (start - HEIGHT / 2 + draw_height / 2) * step;
+	cam->tex_y = (int)cam->tex_pos & (img.h - 1);
+	cam->tex_pos += step;
+	color = img.addr[img.h * cam->tex_y + cam->tex_x];
 	if (cam->hit_type == 1)
 		color = (color >> 1) & 8355711;
 	return (color);
@@ -77,13 +77,13 @@ void	get_tex_x(t_cub *cub, t_tex *tex)
 	p_posy = player.pos.y / TILE_SIZE;
 	p_posx = player.pos.x / TILE_SIZE;
 	if (cam->hit_type == 0)
-		cam->wallX = p_posy + cam->dist * cam->rayDir.y;
+		cam->wall_x = p_posy + cam->dist * cam->raydir.y;
 	else
-		cam->wallX = p_posx + cam->dist * cam->rayDir.x;
-	cam->wallX -= floor(cam->wallX);
-	cam->texX = (int)(cam->wallX * (double)tex->img.w);
-	if (cam->hit_type == 1 && cam->rayDir.y > 0)
-		cam->texX = tex->img.w - cam->texX - 1;
-	if (cam->hit_type == 0 && cam->rayDir.x < 0)
-		cam->texX = tex->img.w - cam->texX - 1;
+		cam->wall_x = p_posx + cam->dist * cam->raydir.x;
+	cam->wall_x -= floor(cam->wall_x);
+	cam->tex_x = (int)(cam->wall_x * (double)tex->img.w);
+	if (cam->hit_type == 1 && cam->raydir.y > 0)
+		cam->tex_x = tex->img.w - cam->tex_x - 1;
+	if (cam->hit_type == 0 && cam->raydir.x < 0)
+		cam->tex_x = tex->img.w - cam->tex_x - 1;
 }
