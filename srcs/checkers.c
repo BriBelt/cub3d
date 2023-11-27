@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checkers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbeltran <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:03:31 by bbeltran          #+#    #+#             */
-/*   Updated: 2023/11/26 18:06:00 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:16:34 by jaimmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,6 @@ int	check_cub_struct(t_cub *cub)
 	if (!cub->map)
 		return (printf(ERRMAP), 0);
 	if (!check_map(cub->map, s_map))
-		return (printf(ERRMAP), free_2d_array(cub->map), 0);
+		return (printf(ERRMAP), free_2d_array(cub->map), t_tex_free(cub->textures), 0);
 	return (1);
 }

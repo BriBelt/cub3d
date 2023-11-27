@@ -6,7 +6,7 @@
 /*   By: jaimmart <jaimmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:28:51 by jaimmart          #+#    #+#             */
-/*   Updated: 2023/11/26 18:09:13 by bbeltran         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:17:59 by jaimmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, char **argv)
 	if (!parsing(argv[1], cub))
 		return (1);
 	if (!check_cub_struct(cub))
-		return (1);
+		return (free(cub), 1);
 	init_game(cub);
 	free_cub(cub);
 	return (0);
